@@ -15,9 +15,22 @@ public class Matrix {
 
     public String printMatrix() {
         StringBuilder print = new StringBuilder();
+        int padding = 0;
+
         for (ArrayList<Double> row : matrix) {
             for (Double element: row) {
-                print.append(element).append("\t");
+                String digits = String.valueOf(element);
+                if (padding < digits.length()) {
+                    padding = digits.length();
+                }
+            }
+        }
+
+        padding += 3;
+
+        for (ArrayList<Double> row : matrix) {
+            for (Double element: row) {
+                print.append(String.format("%-"+padding+"s",element));
             }
             print.append("\n");
         }
@@ -88,8 +101,8 @@ public class Matrix {
         for (int i = 0; i < pivots; i++) {
             double pivotElement = getElement(i, i);
             for (int j = i+1; j < getRowNum(); j++) {
-                double scalar = -getElement(j, i)/pivotElement;
-                addRowtoAnother(i, j, scalar);
+                double scalar = getScalarReduction(pivotElement, getElement(j, i));
+                addRowToAnother(i, j, scalar);
             }
         }
     }
@@ -107,11 +120,13 @@ public class Matrix {
     }
 
     public void swapRows(int row1, int row2) {
-
+        ArrayList<Double> temp = matrix.get(row1);
+        matrix.set(row1, matrix.get(row2));
+        matrix.set(row2, temp);
     }
 
     //row2 + row1 * scalar
-    public void addRowtoAnother(int row1, int row2, double scalar) {
+    public void addRowToAnother(int row1, int row2, double scalar) {
         for (int i = 0; i < getColumnNum(); i++) {
             double element1 = getElement(row1, i);
             double element2 = getElement(row2, i);
@@ -121,11 +136,14 @@ public class Matrix {
     }
 
     public void multiplyRow(int row, double scalar) {
-
+        for (int i = 0; i < getColumnNum(); i++) {
+            double newElement = getElement(row, i)*scalar;
+            matrix.get(row).set(i, newElement);
+        }
     }
 
     // determine scalar such that row below is zero
     private double getScalarReduction(double pivot, double num) {
-        return pivot/-num;
+        return -num/pivot;
     }
 }
