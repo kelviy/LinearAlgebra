@@ -88,8 +88,8 @@ public class Matrix {
         return new Matrix(newMatrix);
     }
 
-    // guassian reduction
-    // algorithm
+    // gaussian reduction
+    // algorithm:
     // make column element to be 0 except the first diagonal. Using valid row reduction operations (1. swap, 2. add row to another row, 3, multiply row by scalar)
     // continue along the diagonal until the end
     // known problem. If too big sometimes the numbers will go to infinity or 0 and mess up the calculation. Maybe some scalling rules will solve the problem
@@ -97,13 +97,6 @@ public class Matrix {
         int pivots = Math.min(this.rows, this.columns);
 
         for (int i = 0; i < pivots; i++) {
-//            int largestRow = i;
-//            for (int j = i+1; j < getRowNum(); j++) {
-//                if (Math.abs(getElement(j, i)) < Math.abs(getElement(largestRow, i))) {
-//                    largestRow = j;
-//                }
-//            }
-//            swapRows(largestRow, i);
 
             double pivotElement = this.matrix[i][i];
 
@@ -166,7 +159,7 @@ public class Matrix {
         }
     }
 
-    // determine scalar such that row below is zero
+    // determine scalar such that row below is zero for gaussian reduction
     private double getScalarReduction(double pivot, double num) {
         return -num/pivot;
     }
